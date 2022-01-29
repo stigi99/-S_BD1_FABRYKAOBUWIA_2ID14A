@@ -1,0 +1,31 @@
+create trigger nowe_zamowienie
+after insert on zlecenie for each ROW
+update magazyn set Liczba_sztuk = Liczba_sztuk - 1
+where ID_magazynu = new.ID_magazynu;
+
+delimiter //
+CREATE TRIGGER osoba_wiek BEFORE INSERT
+ON osoba
+FOR EACH ROW
+IF NEW.wiek < 18 THEN
+SIGNAL SQLSTATE '50001' SET MESSAGE_TEXT = 'Osoba nie może być młodsza od 18 i starsza niż 120 .';
+END IF; //
+delimiter ;
+
+delimiter //
+CREATE TRIGGER osoba_stara BEFORE INSERT
+ON osoba
+FOR EACH ROW
+IF NEW.wiek > 120 THEN
+SIGNAL SQLSTATE '50002' SET MESSAGE_TEXT = 'Taka osoba już nie żyje ';
+END IF; //
+delimiter ;
+
+delimiter //
+CREATE TRIGGER stan_magazynu BEFORE update
+ON magazyn
+FOR EACH ROW
+IF NEW.liczba_sztuk < 100 THEN
+SIGNAL SQLSTATE '50003' SET MESSAGE_TEXT = 'Nasze zapasy kurczą się panie.';
+END IF; //
+delimiter ;

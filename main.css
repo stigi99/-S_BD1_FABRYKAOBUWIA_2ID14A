@@ -1,0 +1,124 @@
+body
+{
+	background-color: #2F3336;
+	color: #efefef;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 17px;
+}
+
+h1
+{
+	font-size: 72px;
+	font-weight: 500;
+	color: #cf6c33;
+	margin: 40px;
+}
+
+.jumpers
+{
+	text-align: center;
+}
+
+.jumpers img
+{
+	width: 100%;
+	height: auto;
+}
+
+.jumpers p
+{
+	margin-bottom: 30px;
+}
+
+.jumpers figcaption
+{
+	margin-top: 8px;
+}
+
+/*
+.navbar-nav li:hover>.dropdown-menu
+{
+	display: block;
+}
+*/
+
+.navbar
+{
+	min-height: 57px;
+}
+
+.bg-jumpers
+{
+	background-color: rgb(151, 92, 15) !important;
+}
+
+.wpis
+{
+	text-align: justify;
+	font-size: 16px;
+	padding: 30px;
+	margin-bottom: 40px;
+}
+
+.list-group-item-dark
+{
+	background-color: #373a3d;
+	color: blue;
+}
+
+.list-group-item-dark:hover
+{
+	background-color: #91a33b !important;
+}
+
+.list-group .active
+{
+	background-color: #91a33b !important;
+	cursor: default;
+}
+
+.blockquote
+{
+	line-height: 120%;
+}
+/*img
+{
+	width:500px;
+	height: 333px;
+}
+*/
+ol.list-unstyled> li,a{
+	color:black;
+}
+ol.list-unstyled >li>a:hover{
+		color:grey;
+		background:sandybrown;
+}
+#clock{
+	margin: 20px;
+}
+
+@media (max-width: 575px)
+{
+	.wpis
+	{
+		margin: 40px 20px;
+		text-align: left;
+		font-size: 15px;
+	}
+	
+	.float-left, .float-right
+	{
+		max-width: 50%;
+	}
+	
+	.blockquote
+	{
+		font-size: 17px;
+	}
+	
+	.list-group
+	{
+		text-align: center;
+	}
+}

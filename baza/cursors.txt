@@ -1,0 +1,104 @@
+DELIMITER $$
+CREATE PROCEDURE cursor_email()
+BEGIN
+
+DECLARE finished INT DEFAULT 0;
+
+DECLARE emails_list VARCHAR(1000) DEFAULT "";
+
+DECLARE emails VARCHAR(30) DEFAULT "";
+
+DECLARE cursor_data CURSOR FOR SELECT Email FROM Osoba limit 5;
+
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;
+
+OPEN cursor_data;
+
+get_user_email: LOOP
+
+FETCH cursor_data INTO emails;
+
+IF finished = 1 THEN 
+LEAVE get_user_email;
+
+END IF;
+SET emails_list = CONCAT(emails_list, ", ", emails);
+
+END LOOP get_user_email;
+
+CLOSE cursor_data;
+
+SELECT emails_list;
+END$$
+DELIMITER ;
+
+
+
+DELIMITER $$
+CREATE PROCEDURE `getFullName`(  INOUT fullNameList varchar(4000)
+)
+BEGIN
+  DECLARE finished INTEGER DEFAULT 0;
+  DECLARE fullName varchar(100) DEFAULT "";
+      DEClARE curName
+        CURSOR FOR
+             SELECT concat(Imie ,' , ' , Nazwisko) FROM Osoba LIMIT 10;
+               DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;
+               OPEN curName;
+               getName: LOOP
+                              FETCH curName INTO fullName;
+                              IF finished = 1 THEN LEAVE getName;
+                              END IF;
+                              SET fullNameList = CONCAT(fullName,";",fullNameList);
+               END LOOP getName;
+               CLOSE curName;
+END$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE daj_podwyzke(kwota int, ile int ) 
+BEGIN
+DECLARE finished INTEGER DEFAULT 0;
+DECLARE tmp int DEFAULT "";
+DEClARE podwyzka
+CURSOR FOR SELECT pensja from pracownik; 
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1; 
+OPEN podwyzka; podnies:
+LOOP FETCH podwyzka INTO tmp;
+IF finished = 1 THEN LEAVE podnies; 
+END IF;
+IF tmp < kwota then update pracownik set pensja = pensja+ile where pensja = tmp;
+END IF;
+END LOOP podnies; 
+CLOSE podwyzka;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE podnies_najczesniej_kupowane(ile_szt int, ile int ) 
+BEGIN
+DECLARE finished INTEGER DEFAULT 0;
+DECLARE ilosc int;
+DECLARE id_buta int ;
+declare tmp int default 0;
+DEClARE buty
+CURSOR FOR   select zlecenie.ID_produktu, count(cena) as sprzedane from zlecenie
+ inner join produkt on produkt.ID_produktu = zlecenie.ID_produktu 
+group by zlecenie.ID_produktu order by sprzedane desc;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1; 
+OPEN buty;
+
+wczytaj:
+LOOP FETCH buty INTO id_buta, ilosc;
+IF finished = 1 THEN LEAVE wczytaj; 
+END IF;
+IF ilosc >= ile_szt  THEN 
+update produkt set cena = cena+ile where ID_produktu = id_buta;
+END IF;
+
+END LOOP wczytaj; 
+CLOSE buty;
+END$$
+DELIMITER ;

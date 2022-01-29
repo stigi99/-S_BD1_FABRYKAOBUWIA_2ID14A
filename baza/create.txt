@@ -1,0 +1,102 @@
+CREATE TABLE Adres (
+ID_adres INTEGER PRIMARY KEY,
+Panstwo VARCHAR(30) NOT NULL,
+Miasto VARCHAR(25) NOT NULL,
+Kod_pocztowy VARCHAR(7) NOT NULL,
+Ulica VARCHAR(30) NOT NULL,
+Nr VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE Osoba (
+ID_osoby INTEGER PRIMARY KEY,
+Imie VARCHAR(15) NOT NULL,
+Nazwisko VARCHAR(30) NOT NULL,
+Wiek INTEGER NOT NULL,
+Stan_cywilny VARCHAR(12) NOT NULL,
+Telefon VARCHAR(20),
+Pesel CHAR(11) NOT NULL UNIQUE,
+Email VARCHAR(30),
+ID_adres INTEGER NOT NULL,
+CONSTRAINT os_ad_fk FOREIGN KEY (ID_adres) REFERENCES Adres(ID_adres)
+);
+
+CREATE TABLE Klient (
+ID_klienta INTEGER PRIMARY KEY,
+ID_osoby INTEGER NOT NULL  UNIQUE,
+CONSTRAINT kl_os_fk FOREIGN KEY (ID_osoby) REFERENCES Osoba(ID_osoby)
+);
+
+CREATE TABLE Stanowisko (
+ID_stanowiska INTEGER PRIMARY KEY,
+Nazwa VARCHAR(20) NOT NULL,
+Dzial VARCHAR(50)
+);
+
+CREATE TABLE Pracownik (
+ID_pracownika INTEGER PRIMARY KEY,
+ID_osoby INTEGER NOT NULL UNIQUE,
+ID_stanowiska INTEGER NOT NULL,
+Staz INTEGER NOT NULL, CHECK ((Staz>=0) AND (Staz<=45)),
+Pensja INTEGER NOT NULL, CHECK (Pensja>=1226),
+CONSTRAINT pr_os_fk FOREIGN KEY (ID_osoby) REFERENCES Osoba(ID_osoby),
+CONSTRAINT pr_st_fk FOREIGN KEY (ID_stanowiska) REFERENCES Stanowisko(ID_stanowiska)
+);
+
+CREATE TABLE Specyfikacja(
+ID_specyfikacji INTEGER  PRIMARY KEY,
+Kolor VARCHAR(20) NOT NULL,
+Materiał VARCHAR(20) NOT NULL,
+Fason VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE Kolekcja(
+ID_kolekcja INTEGER PRIMARY KEY,
+Sezon VARCHAR(10) NOT NULL,
+Rok_produkcji INTEGER NOT NULL
+);
+
+CREATE TABLE Rozmiar(
+ID_rozmiar INTEGER PRIMARY KEY,
+Płeć VARCHAR(15) NOT NULL,
+Nr INTEGER NOT NULL
+);
+
+CREATE TABLE Produkt (
+ID_produktu INTEGER PRIMARY KEY,
+ID_rozmiar INTEGER NOT NULL,
+ID_kolekcja INTEGER NOT NULL,
+ID_specyfikacji INTEGER NOT NULL UNIQUE,
+Nazwa VARCHAR(20),
+Marka VARCHAR(20),
+Cena INTEGER NOT NULL,
+CONSTRAINT pro_ro_fk FOREIGN KEY (ID_rozmiar) REFERENCES Rozmiar(ID_rozmiar),
+CONSTRAINT pro_ko_fk FOREIGN KEY (ID_kolekcja) REFERENCES Kolekcja(ID_kolekcja),
+CONSTRAINT pro_sp_fk FOREIGN KEY (ID_specyfikacji) REFERENCES Specyfikacja(ID_specyfikacji)
+);
+CREATE TABLE Dostawca(
+ID_dostawcy INTEGER PRIMARY KEY,
+Cena INTEGER NOT NULL,
+Nazwa VARCHAR(10) NOT NULL,
+NIP VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE Magazyn(
+ID_magazynu INTEGER PRIMARY KEY,
+ID_produktu INTEGER  UNIQUE,
+Powieszchnia INTEGER NOT NULL,
+Liczba_sztuk INTEGER NOT NULL,
+CONSTRAINT ma_pro_fk FOREIGN KEY (ID_produktu) REFERENCES Produkt(ID_produktu)
+);
+
+CREATE TABLE Zlecenie (
+ID_Zlecenia INTEGER PRIMARY KEY,
+ID_produktu INTEGER NOT NULL,
+ID_dostawcy INTEGER NOT NULL,
+ID_klienta INTEGER NOT NULL,
+ID_magazynu INTEGER NOT NULL,
+Data_zlozenia DATE NOT NULL,
+CONSTRAINT zl_pro_fk FOREIGN KEY (ID_produktu) REFERENCES Produkt(ID_produktu),
+CONSTRAINT zl_do_fk FOREIGN KEY (ID_dostawcy) REFERENCES Dostawca(ID_dostawcy),
+CONSTRAINT zl_kl_fk FOREIGN KEY (ID_klienta) REFERENCES Klient(ID_klienta),
+CONSTRAINT zl_ma_fk FOREIGN KEY (ID_magazynu) REFERENCES Magazyn(ID_magazynu)
+);

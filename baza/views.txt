@@ -1,0 +1,9 @@
+create view wiosna as select Sezon, Rok_produkcji, nazwa, marka, cena, płeć, nr from Kolekcja inner join Produkt on kolekcja.ID_kolekcja = Produkt.ID_produktu inner join Rozmiar on Produkt.ID_rozmiar = Rozmiar.ID_rozmiar where Sezon like 'WIOSNA%';
+create view lato as select Sezon, Rok_produkcji, nazwa, marka, cena, płeć, nr from Kolekcja inner join Produkt on kolekcja.ID_kolekcja = Produkt.ID_produktu inner join Rozmiar on Produkt.ID_rozmiar = Rozmiar.ID_rozmiar where Sezon like 'LATO%';
+create view jesien as select Sezon, Rok_produkcji, nazwa, marka, cena, płeć, nr from Kolekcja inner join Produkt on kolekcja.ID_kolekcja = Produkt.ID_produktu inner join Rozmiar on Produkt.ID_rozmiar = Rozmiar.ID_rozmiar where Sezon like 'Jesien%';
+create view zima as select Sezon, Rok_produkcji, nazwa, marka, cena, płeć, nr from Kolekcja inner join Produkt on kolekcja.ID_kolekcja = Produkt.ID_produktu inner join Rozmiar on Produkt.ID_rozmiar = Rozmiar.ID_rozmiar where Sezon like 'Zima%';
+create view Pracownik_osoba as select ID_pracownika, staz, pensja, nazwa, dzial, imie, nazwisko, email, panstwo, miasto, kod_pocztowy, ulica from pracownik inner join stanowisko on pracownik.ID_pracownika = Stanowisko.ID_stanowiska inner join osoba on Pracownik.ID_osoby = Osoba.ID_osoby inner join adres on Osoba.ID_adres = Adres.ID_adres;
+create view klient_osoba as select klient.ID_klienta, Imie, Nazwisko, Telefon , email, panstwo, miasto, kod_pocztowy, ulica, nr, id_zlecenia, data_zlozenia from klient 
+inner join osoba on Klient.ID_osoby = osoba.ID_osoby
+inner join adres on osoba.ID_adres = Adres.ID_adres
+inner join Zlecenie on Klient.ID_klienta = Zlecenie.ID_klienta;
